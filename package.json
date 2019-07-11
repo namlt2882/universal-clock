@@ -1,0 +1,24 @@
+{
+  "name": "simpleapp",
+  "version": "1.0.0",
+  "description": "A simple Electron application",
+  "main": "main.js",
+  "scripts": {
+    "build": "webpack",
+    "electron": "electron .",
+    "test": "jest",
+    "start": "electron main.js"
+  },
+  "author": "Nam Le",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "5.0.6"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "city-timezones": "github:kevinroberts/city-timezones#master",
+    "jquery": "^3.4.1",
+    "moment-timezone": "^0.5.26",
+    "node-notifier": "^5.4.0"
+  }
+}
