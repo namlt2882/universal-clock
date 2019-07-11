@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="UTF-8">
+   <title>File System</title>
+   <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
+   <style type="text/css">
+      .container {
+         margin: 10px;
+         padding: 10px;
+         border: 1px solid dimgrey;
+      }
+   </style>
+
+</head>
+
+<body>
+   <div class="container" id="searchTimezone">
+      <div class="form-inline">
+         <input type="text" class="form-control" name='search' placeholder="Type a city name">
+         <button name="search-btn" class="btn btn-primary">Search</button>
+      </div>
+      <div class="search-result">
+
+      </div>
+   </div>
+   <div class="container" id="currentTimezone">
+
+   </div>
+   <div class="container" id="trackingTimezone">
+
+   </div>
+   <script>
+      require('./home-view.js');
+   </script>
+</body>
+
+</html>
