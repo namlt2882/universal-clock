@@ -37,8 +37,6 @@
 
       .track-btn:hover {
          cursor: pointer;
-         background-color: darkgray;
-         border-radius: 10px;
       }
 
       .search-bar {
@@ -90,6 +88,19 @@
          position: absolute;
          bottom: 5px;
          right: 10px;
+      }
+
+      .untrack-timezone {
+         opacity: 0;
+         max-width: 10px;
+      }
+
+      .trackingTimezone {
+         margin-top: 10px;
+      }
+
+      #trackingTimezone .trackingTimezone:hover .untrack-timezone {
+         opacity: 1;
       }
    </style>
 

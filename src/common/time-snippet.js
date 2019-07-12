@@ -1,14 +1,16 @@
 let $ = require('jquery')
 let timeZoneService = require('../service/timezone-service')
-var html = `<div style="text-align:center;">
+var html = `<div class="trackingTimezone" style="text-align:center;">
         <span class="timezone-daynight"></span>
         <span class="timezone-name"></span>
         <span class="timezone"></span>
+        <span><i class="fa fa-lg fa-trash untrack-timezone track-btn"></i></span>
     </div>`
-function TimeSnippet(timezone, format, template = html) {
+function TimeSnippet(timezone, format, cityData, template = html) {
     this.timezone = timezone;
     this.format = format
     this.template = template
+    this.cityData = cityData
 }
 TimeSnippet.prototype.render = function () {
     this.html = $(this.template);
@@ -16,6 +18,7 @@ TimeSnippet.prototype.render = function () {
     var moment = timeZoneService.getTime(this.timezone.timezoneOffset, this.format)
     this.html.find('.timezone').text(moment)
     this.resetDaylight(this.isMorning(moment))
+    this.html.find('.untrack-timezone').click(() => { this.untrack()})
     return this.html;
 }
 TimeSnippet.prototype.resetDaylight = function (isMorning = this.morning) {
@@ -31,5 +34,16 @@ TimeSnippet.prototype.update = function () {
     var moment = timeZoneService.getTime(this.timezone.timezoneOffset, this.format);
     this.html.find('.timezone').text(moment)
     this.resetDaylight(this.isMorning(moment));
+}
+TimeSnippet.prototype.beforeUntrack = function () {
+    return window.confirm(`Are you sure to untrack ${this.timezone.timezoneName}?`)
+}
+TimeSnippet.prototype.afterUntrack = function (html) { }
+TimeSnippet.prototype.untrack = function () {
+    if (!this.beforeUntrack()) return
+    if (timeZoneService.untrackCity(this.cityData)) {
+        this.html.remove();
+        this.afterUntrack();
+    }
 }
 module.exports = TimeSnippet

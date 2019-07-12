@@ -30,8 +30,32 @@ function createUserdataFile() {
 }
 function trackTimezone(cityData) {
     var config = getCurrentTimezone();
+    if (findTrackingCity(cityData)) return
     config.trackingTimezones.push(cityData);
     saveConfigTimezone(config)
+}
+function findTrackingCity(cityData) {
+    var config = getCurrentTimezone();
+    for (var i = 0; i < config.trackingTimezones.length; i++) {
+        if (compareCityData(config.trackingTimezones[i], cityData)) {
+            return config.trackingTimezones[i];
+        }
+    }
+    return null
+}
+function untrackCity(cityData) {
+    var config = getCurrentTimezone();
+    for (var i = 0; i < config.trackingTimezones.length; i++) {
+        if (compareCityData(config.trackingTimezones[i], cityData)) {
+            config.trackingTimezones.splice(i, 1);
+            saveConfigTimezone(config)
+            return true;
+        }
+    }
+    return false
+}
+function compareCityData(cd1, cd2) {
+    return cd1.city == cd2.city && cd1.country == cd1.country;
 }
 function getCurrentTimezone() {
     var data = readConfigTimezoneSync()
@@ -91,4 +115,4 @@ function getCityDataForLocation(location) {
     const cityData = cityTimeZones.findFromCityStateProvince(location);
     return cityData;
 }
-module.exports = { getCurrentTimezone, getNormalizedUtcOffset, getUtcOffsetForLocation, getCityDataForLocation, getTime, trackTimezone }
+module.exports = { getCurrentTimezone, getNormalizedUtcOffset, getUtcOffsetForLocation, getCityDataForLocation, getTime, trackTimezone, untrackCity, compareCityData }

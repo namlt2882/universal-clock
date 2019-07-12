@@ -21,7 +21,7 @@ function onSearch(searchValue) {
                 button.on('click', function () {
                     home.onTrackTimezone(location)
                 })
-                var snippet = new TimeSnippet({ timezoneOffset: timeZoneService.getNormalizedUtcOffset(location.timezone) }, 'MMMM Do, hh:mm:ss a', `<span><span class="timezone-daynight"></span><span class='timezone'></span><span>`);
+                var snippet = new TimeSnippet({ timezoneOffset: timeZoneService.getNormalizedUtcOffset(location.timezone) }, 'MMMM Do, hh:mm:ss a', null, `<span><span class="timezone-daynight"></span><span class='timezone'></span><span>`);
                 snippets.push(snippet)
                 content.append(`${locationName} | `).append(snippet.render()).append(button)
                 return content;
