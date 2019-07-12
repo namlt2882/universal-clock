@@ -30,9 +30,11 @@ function createUserdataFile() {
 }
 function trackTimezone(cityData) {
     var config = getCurrentTimezone();
-    if (findTrackingCity(cityData)) return
+    if (findTrackingCity(cityData))
+        return false
     config.trackingTimezones.push(cityData);
     saveConfigTimezone(config)
+    return true
 }
 function findTrackingCity(cityData) {
     var config = getCurrentTimezone();

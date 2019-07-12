@@ -6,8 +6,10 @@ var html = `<div class="trackingTimezone" style="text-align:center;">
         <span class="timezone"></span>
         <span><i class="fa fa-lg fa-trash untrack-timezone track-btn"></i></span>
     </div>`
+var seed = 0
 function TimeSnippet(timezone, format, cityData, template = html) {
     this.timezone = timezone;
+    this.timezone.id = ++seed
     this.format = format
     this.template = template
     this.cityData = cityData
@@ -18,7 +20,7 @@ TimeSnippet.prototype.render = function () {
     var moment = timeZoneService.getTime(this.timezone.timezoneOffset, this.format)
     this.html.find('.timezone').text(moment)
     this.resetDaylight(this.isMorning(moment))
-    this.html.find('.untrack-timezone').click(() => { this.untrack()})
+    this.html.find('.untrack-timezone').click(() => { this.untrack() })
     return this.html;
 }
 TimeSnippet.prototype.resetDaylight = function (isMorning = this.morning) {

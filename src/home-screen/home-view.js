@@ -3,14 +3,14 @@ let timeZoneService = require('../service/timezone-service')
 let TimeSnippet = require('../common/time-snippet')
 let LocationName = require('../common/location-name')
 var snippets = [];
-var seed = 0;
+
 function onTrackTimezone(cityData) {
     if (!timeZoneService.trackTimezone(cityData)) return
     renderTrackTimezone(cityData)
 }
 function renderTrackTimezone(cityData) {
     var locationName = new LocationName().add(cityData.country).add(cityData.province).add(cityData.city).name;
-    var snippet = new TimeSnippet({ id: ++seed, timezoneName: locationName, timezoneOffset: timeZoneService.getNormalizedUtcOffset(cityData.timezone) }, 'MMMM Do, hh:mm:ss a', cityData);
+    var snippet = new TimeSnippet({ timezoneName: locationName, timezoneOffset: timeZoneService.getNormalizedUtcOffset(cityData.timezone) }, 'MMMM Do, hh:mm:ss a', cityData);
     snippets.push(snippet)
     snippet.afterUntrack = function () {
         for (var i = 0; i < snippets.length; i++) {
@@ -29,8 +29,7 @@ function render() {
 }
 function updateSnippet() {
     snippets.forEach(snp => snp.update())
-    setTimeout(updateSnippet, 1000);
 }
-updateSnippet();
+setInterval(updateSnippet, 1000)
 render();
 module.exports = { onTrackTimezone }
