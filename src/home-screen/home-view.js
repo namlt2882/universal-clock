@@ -16,7 +16,7 @@ function renderTrackTimezone(cityData) {
 }
 function render() {
     var currentTimezone = timeZoneService.getCurrentTimezone();
-    var currentSnippet = new TimeSnippet(currentTimezone, 'MMMM Do, hh:mm:ss a');// current time zone
+    var currentSnippet = new TimeSnippet(currentTimezone, 'MMMM Do, hh:mm:ss a',);// current time zone
     snippets.push(currentSnippet);
     $('#currentTimezone').append(currentSnippet.render());
     currentTimezone.trackingTimezones.forEach(cityData => renderTrackTimezone(cityData))

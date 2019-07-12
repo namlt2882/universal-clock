@@ -17,15 +17,22 @@ function onSearch(searchValue) {
             resultArea.html(cityData.map(location => {
                 var locationName = new LocationName().add(location.country).add(location.province).add(location.city).name;
                 var content = $(`<div class='search-item'/>`)
-                var button = $('<button>Track</button>')
+                var button = $(`<i class="fa fa-eye track-btn" title="Track ${location.city}"></i>`)
                 button.on('click', function () {
                     home.onTrackTimezone(location)
                 })
-                var snippet = new TimeSnippet({ timezoneOffset: timeZoneService.getNormalizedUtcOffset(location.timezone) }, 'MMMM Do, hh:mm:ss a', `<span><span class='timezone'></span><span>`);
+                var snippet = new TimeSnippet({ timezoneOffset: timeZoneService.getNormalizedUtcOffset(location.timezone) }, 'MMMM Do, hh:mm:ss a', `<span><span class="timezone-daynight"></span><span class='timezone'></span><span>`);
                 snippets.push(snippet)
                 content.append(`${locationName} | `).append(snippet.render()).append(button)
                 return content;
             }))
+            var remove = $('<a href="" class="search-remove">Remove</a>')
+            remove.click((e) => {
+                e.preventDefault();
+                resultArea.html(null)
+                searchInput.val('')
+            })
+            resultArea.append(remove)
         }
     }
 }
@@ -34,10 +41,20 @@ function updateSnippet() {
     setTimeout(updateSnippet, 1000)
 }
 updateSnippet();
+
+var searchInput;
+var searchButton;
 $(function () {
     var area = $('#searchTimezone');
-    area.find("button[name='search-btn']").on('click', () => {
-        var searchValue = area.find("input[name='search']").val();
+    searchInput = area.find("input[name='search']");
+    searchButton = area.find("button[name='search-btn']");
+    searchInput.keypress((e) => {
+        if (e.which == 13) {
+            searchButton.click()
+        }
+    })
+    searchButton.on('click', () => {
+        var searchValue = searchInput.val();
         onSearch(searchValue);
     })
 })
