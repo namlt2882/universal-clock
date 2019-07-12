@@ -16,13 +16,22 @@ function readConfigTimezoneSync(callback) {
     createUserdataFile();
     return fs.readFileSync(usrDataPath, { encoding: 'utf8' });
 }
+function saveConfigTimezone(config) {
+    createUserdataFile();
+    fs.writeFileSync(usrDataPath, JSON.stringify(config));
+}
 function createUserdataFile() {
     if (!fs.existsSync(usrDataPath)) {
-        var currentTimezoneOffset = new Date().getTimezoneOffset();
+        var currentTimezoneOffset = getNormalizedUtcOffset(moment.tz.guess());
         var usrdata = require('../utility/timezone')
         usrdata.timezoneOffset = currentTimezoneOffset;
         fs.writeFileSync(usrDataPath, JSON.stringify(usrdata));
     }
+}
+function trackTimezone(cityData) {
+    var config = getCurrentTimezone();
+    config.trackingTimezones.push(cityData);
+    saveConfigTimezone(config)
 }
 function getCurrentTimezone() {
     var data = readConfigTimezoneSync()
@@ -30,8 +39,9 @@ function getCurrentTimezone() {
     return data;
 }
 
-function getTime(timezoneOffset) {
-    var time = moment().utcOffset(timezoneOffset, true);
+function getTime(timezoneOffset, format) {
+    var time = moment().utcOffset(timezoneOffset, false);
+    if (format) time = time.format(format)
     return time;
 }
 
@@ -75,7 +85,10 @@ function getUtcOffsetForLocation(location) {
 
         return [...offsetSet].sort((a, b) => a - b);
     }
-    return null;
+    return [];
 }
-console.log(__dirname)
-module.exports = { getCurrentTimezone, getUtcOffsetForLocation, getTime }
+function getCityDataForLocation(location) {
+    const cityData = cityTimeZones.findFromCityStateProvince(location);
+    return cityData;
+}
+module.exports = { getCurrentTimezone, getNormalizedUtcOffset, getUtcOffsetForLocation, getCityDataForLocation, getTime, trackTimezone }

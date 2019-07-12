@@ -1,48 +1,30 @@
 let $ = require('jquery')
 let timeZoneService = require('../service/timezone-service')
+let TimeSnippet = require('../common/time-snippet')
+let LocationName = require('../common/location-name')
+var snippets = [];
 
+function onTrackTimezone(cityData) {
+    timeZoneService.trackTimezone(cityData)
+    renderTrackTimezone(cityData)
+}
+function renderTrackTimezone(cityData) {
+    var locationName = new LocationName().add(cityData.country).add(cityData.province).add(cityData.city).name;
+    var snippet = new TimeSnippet({ timezoneName: locationName, timezoneOffset: timeZoneService.getNormalizedUtcOffset(cityData.timezone) }, 'MMMM Do, hh:mm:ss a');
+    snippets.push(snippet)
+    $('#trackingTimezone').append(snippet.render());
+}
 function render() {
     var currentTimezone = timeZoneService.getCurrentTimezone();
-    var snippets = [];
-    var content = `<table>
-    <tr>
-        <td>Timezone:</td>
-        <td class='timezone-name'></td>
-    </tr>
-    <tr>
-        <td>Time:</td>
-        <td class='timezone'></td>
-    </tr>
-    </table>`;
-
-    function createSnippet() {
-        snippets.push(new Snippet($('#currentTimezone'), content, currentTimezone));// current time zone
-        snippets.forEach(snp => snp.render())
-    }
-
-    function updateSnippet() {
-        snippets.forEach(snp => snp.update())
-        setTimeout(updateSnippet, 1000);
-    }
-    createSnippet();
-    updateSnippet();
+    var currentSnippet = new TimeSnippet(currentTimezone, 'MMMM Do, hh:mm:ss a');// current time zone
+    snippets.push(currentSnippet);
+    $('#currentTimezone').append(currentSnippet.render());
+    currentTimezone.trackingTimezones.forEach(cityData => renderTrackTimezone(cityData))
 }
-
-function Snippet(parent, html, timezone) {
-    this.parent = parent;
-    this.html = html;
-    this.timezone = timezone;
+function updateSnippet() {
+    snippets.forEach(snp => snp.update())
+    setTimeout(updateSnippet, 1000);
 }
-Snippet.prototype.render = function () {
-    var parent = $(this.parent);
-    parent.html(this.html);
-    parent.find('.timezone-name').text(this.timezone.timezoneName);
-    parent.find('.timezone').text(timeZoneService.getTime(this.timezone.timezoneOffset))
-}
-
-Snippet.prototype.update = function () {
-    var parent = $(this.parent);
-    parent.find('.timezone').text(timeZoneService.getTime(this.timezone.timezoneOffset))
-}
+updateSnippet();
 render();
-module.exports = { render, Snippet }
+module.exports = { onTrackTimezone }
