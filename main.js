@@ -20,4 +20,7 @@ function createWindow() {
 //set menu
 const menu = Menu.buildFromTemplate(menuTemplate)
 Menu.setApplicationMenu(menu)
+
+require('./src/home-screen/search-timezone.bg')
+
 app.on('ready', createWindow)
