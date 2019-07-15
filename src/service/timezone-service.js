@@ -6,7 +6,11 @@ var moment = require('moment-timezone')
 var fs = require('fs')
 var cityTimeZones = require('city-timezones')
 const path = require('path')
-const usrDataPath = path.join(__dirname, './../../usr.dat');
+const electron = require('electron')
+
+var usrDataPath
+if (!usrDataPath)
+    usrDataPath = path.join((electron.app || electron.remote.app).getPath('userData'), './usr.dat');
 
 function readConfigTimezone(callback) {
     createUserdataFile();
