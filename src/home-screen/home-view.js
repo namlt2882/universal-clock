@@ -9,7 +9,7 @@ function onTrackTimezone(cityData) {
     renderTrackTimezone(cityData)
 }
 function renderTrackTimezone(cityData) {
-    var locationName = new LocationName().add(cityData.country).add(cityData.province).add(cityData.city).name;
+    var locationName = new LocationName().add(cityData.iso3).add(cityData.city).name;
     var snippet = new TimeSnippet({ timezoneName: locationName, timezoneOffset: timeZoneService.getNormalizedUtcOffset(cityData.timezone) }, 'MMMM Do, hh:mm:ss a', cityData);
     snippets.push(snippet)
     snippet.afterUntrack = function () {

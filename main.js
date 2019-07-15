@@ -16,11 +16,10 @@ function createWindow() {
       protocol: 'file:',
       slashes: true
    }))
+   //set menu
+   const menu = Menu.buildFromTemplate(menuTemplate(window))
+   Menu.setApplicationMenu(menu)
 }
-//set menu
-const menu = Menu.buildFromTemplate(menuTemplate)
-Menu.setApplicationMenu(menu)
+app.on('ready', createWindow)
 
 require('./src/home-screen/search-timezone.bg')
-
-app.on('ready', createWindow)
