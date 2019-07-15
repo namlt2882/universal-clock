@@ -1,18 +1,47 @@
 {
-  "name": "simpleapp",
+  "name": "UniversalClock",
   "version": "1.0.0",
   "description": "A simple Electron application",
   "main": "main.js",
   "scripts": {
-    "build": "webpack",
     "electron": "electron .",
     "test": "jest",
-    "start": "electron main.js"
+    "start": "electron main.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.namle.universal_clock",
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "NSIS",
+      "icon": "build/icon.ico"
+    }
   },
   "author": "Nam Le",
   "license": "ISC",
   "devDependencies": {
-    "electron": "5.0.6"
+    "electron": "5.0.6",
+    "electron-builder": "^21.0.15"
   },
   "dependencies": {
     "bootstrap": "4.3.1",
