@@ -7,5 +7,5 @@ An desktop application based on **Electron** technology to track time of multipl
 First, install node modules `npm install`.
 Then run with `npm start`.
 
-If you want to build the app, use `npm run dist` to build app with **electron-builder**
+If you want to build the app, use `npm run dist` to build app with **electron-builder**.
 
